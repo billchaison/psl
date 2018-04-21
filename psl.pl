@@ -250,15 +250,15 @@ sub get_template()
  need to run without user interaction face a challenge of where and how to
  store keys or credentials.  The usual methods of including credentials within
  scripts is to either store them in plain text, obfuscate them in some
- reversible form such as base64 or rot13, use encoding/encryption methods where
- access to the decryption material may be trivial even if stored off-host, or
- by protecting scripts simply with file permissions.  Approaches that use key
- retrieval methods at run-time from a key management system (KMS) may add
+ reversible form such as base64, XOR or rot13, use encoding/encryption methods
+ where access to the decryption material may be trivial even if stored off-host
+ or by protecting scripts simply with file permissions.  Approaches that use
+ key retrieval methods at run-time from a key management system (KMS) may add
  complexity to the task of retrieving secrets but ultimately do not solve the
  problem, they merely relocate the problem.  Systems employing trusted host or
- application level mutual authentication and key encrypting keys (KEKs) often
- have a weak element which can be used to circumvent security; given enough
- analysis, time and effort those weaknesses can be exploited.
+ application level mutual authentication and key encrypting keys (KEKs) may
+ have a vulnerable implementation which can be used to circumvent security;
+ given enough analysis, time and effort those weaknesses can be exploited.
 
  PSL does not introduce a revolutionary method to automated key retrieval but
  it does add several factors that improve on the storage and execution of
@@ -268,13 +268,14 @@ sub get_template()
 
  (1)  PSL is a lightweight and self-contained Linux executable that is compiled
       from dynamically generated source code.  Each build of PSL is unique and
-      is programmatically paired with database (DB) files created.
+      is programmatically paired with database (DB) files created.  PSL
+      programmatically regenerates decryption keys at run-time.
  (2)  Since PSL is self-contained you can be creative in the way it is invoked
       and accessed to augment security.  For example:
       (a) You could make the PSL executable or the created DB file ephemerally
           accessible only when it is needed.
-      (b) You could build unique instances of PSL for multiple users on a
-          shared automation server.
+      (b) You could build unique instances of PSL for multiple users or even
+          multiple tasks on a shared automation server.
       (c) You could chain instances of PSL where the final instance that is
           called is the one that launches your script.
  (3)  PSL utilizes AES-128-CBC encryption with two key and IV phases to decrypt
@@ -283,8 +284,8 @@ sub get_template()
       and the script at execution time.
  (5)  PSL incorporates debug detection to determine if it is being launched by
       a debugger.
- (6)  Launching a protected script with PSL involves calling PSL against a
-      an encrypted DB file that was created ahead of time.  The paths to the
+ (6)  Launching a protected script with PSL involves calling PSL against an
+      encrypted DB file that was created ahead of time.  The paths to the
       interpreter and script are encrypted within the DB file with the phase 1
       key and IV, which hides the actual script path from view.
  (7)  PSL passes secrets to the interpreter and script you specify as
