@@ -331,31 +331,31 @@ sub get_template()
 
  Once you have compiled PSL execute it from the command line without
  arguments to get help.  The goal of this program is to hide the path of an
- interpreter and protected script that uses static credentials in an AES
- encrypted DB file along with the SHA-256 hash of the launcher, the interpreter
- and the script to ensure that they have not been altered.  This allows for
- secure script execution and role separation on a shared automation server.
- When PSL is executed against a DB file the PSL image is integrity checked, as
- are the interpreter, script and DB file itself.  If all of these checks are
- successful then the environment variables are passed to your script where they
- can be used to perform a privileged operation.  An example would be an Expect
- script in a cron job that logs into a router via SSH to execute a command.
- Once you have completed the development and testing of your script you call
- "psl init" against the interpreter and script, and specify the output DB file
- name to create.  E.g. "psl init /bin/bash /home/user/s1.sh /home/user/s1.db".
- The interpreter, script and PSL binary will be hashed using SHA-256.  The
- hashes are stored in the encrypted DB file using the phase 1 key and IV that
- are derived at run-time by dynamically generated functions and substitution
- tables embedded into the copy of the PSL executable that you compiled.  The
- SHA-256 hash of the PSL executable, interpreter and script are checked when
- invoking "psl exec" to ensure that they haven't been tampered with.  If the
- hashes don't match then "psl exec" will exit with an error.  If the hashes
- are valid then PSL generates a phase 2 key and IV from random data stored in
- the DB file.  This key is used to decrypt the environment variable values that
- are passed to your script via the interpreter you specified.  If you modify
- your script or the interpreter is updated then you must recreate your DB file
- using the "psl init" option.  Executing "psl init" will also prompt you to
- define 16 environment variables that can be passed to your script.  The
+ interpreter and protected script as well as encrypting secrets within an
+ AES encrypted DB file, along with the SHA-256 hash of the launcher, the
+ interpreter and the script to ensure that they have not been altered.  This
+ allows for secure script execution and role separation on a shared automation
+ server.  When PSL is executed against a DB file the PSL image is integrity
+ checked, as are the interpreter, script and DB file itself.  If all of these
+ checks are successful then the environment variables are passed to your script
+ where they can be used to perform a privileged operation.  An example would be
+ an Expect script in a cron job that logs into a router via SSH to execute a
+ command.  Once you have completed the development and testing of your script
+ you call "psl init" against the interpreter and script, and create a DB file
+ as output.  E.g. "psl init /bin/bash /home/user/s1.sh /home/user/s1.db".  The
+ interpreter, script and PSL binary will be hashed using SHA-256.  The hashes
+ are stored in the encrypted DB file using the phase 1 key and IV that are
+ derived at run-time by dynamically generated functions and substitution tables
+ embedded into the copy of the PSL executable that you compiled.  The SHA-256
+ hash of the PSL executable, interpreter and script are checked when invoking
+ "psl exec" to ensure that they haven't been tampered with.  If the hashes
+ do not match then "psl exec" will exit with an error.  If the hashes are valid
+ then PSL generates a phase 2 key and IV from random data found in the DB file.
+ This key is used to decrypt the environment variable values that are passed to
+ your script via the interpreter you specified.  If you modify your script or
+ the interpreter is updated then you must recreate your DB file as done
+ previously using the "psl init" option.  Executing "psl init" will also prompt
+ you to define 16 environment variables that can be passed to your script.  The
  environment variable names are predefined but their values can be whatever you
  specify.  If the script you specify when executing "psl init" calls other
  scripts you must ensure the integrity of those scripts; only the parent script
