@@ -1,22 +1,6 @@
 # psl
 Protected Script Launcher, version 1.1.0
 
-Offers an improvement in storing sensitive script parameters, such as
-authentication credentials, over traditional methods.  Automated tasks that
-need to run without user interaction face a challenge of where and how to
-store keys or credentials.  The usual methods of including credentials within
-scripts is to either store them in plain text, obfuscate them in some
-reversible form such as base64, XOR or rot13, use encoding/encryption methods
-where access to the decryption material may be trivial even if stored off-host
-or by protecting scripts simply with file permissions.  Approaches that use
-key retrieval methods at run-time from a key management system (KMS) may add
-complexity to the task of retrieving secrets but ultimately do not solve the
-problem, they merely relocate the problem.  Systems employing trusted host or
-application level mutual authentication and key encrypting keys (KEKs) may
-have a vulnerable implementation which can be used to circumvent security;
-given enough analysis, time and effort those weaknesses can be exploited.
+An improved method of storing script parameters, such as authentication credentials, over traditional methods.  Automated tasks that need to run without user interaction face a challenge of where and how to store keys or secrets.  The usual methods of including credentials within scripts is to either store them in plain text, obfuscate them in some reversible form such as base64, XOR or rot13, use encoding/encryption methods where access to the decryption material may be trivial even if stored off-host or by protecting scripts simply with file permissions.  Approaches that use key retrieval methods at run-time from a key management system (KMS) may add complexity to the task of retrieving secrets but ultimately do not solve the problem, they merely relocate the problem.  Systems employing trusted host or application level mutual authentication and key encrypting keys (KEKs) may fall vicitim to similar vulnerable implementations where secrets are relatively unprotected creating a condition where overall security is easily circumvented.
 
-PSL does not introduce a revolutionary method to automated key retrieval but
-it does add several factors that improve on the storage and execution of
-protected scripts.  View the comments under the "Description" section of
-the source template in the perl script (psl.pl) for more information.
+PSL does not introduce a perfect solution to automated key retrieval but it does add several factors that improve upon the storage and execution of protected scripts.  Some of these improvements are AES-128 encrypted secrets, integrity checking on the script and its interpreter using SHA-256, and installation-unique decryption material.  View the comments under the "Description" section of the source template in the perl script (psl.pl) for more information.
