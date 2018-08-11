@@ -303,7 +303,7 @@ sub get_template()
           the psl.pl and psl.c files in the event that you need to recompile.
       (d) Compile PSL using the gcc "-s" option to strip out the symbol table.
           The symbol table makes it easier to reverse engineer the PSL binary.
-	  Optionally take advantage of ASLR by using -fPIE -pie.
+          Optionally take advantage of ASLR by using -fPIE -pie.
       (e) Limit read/write/execute permissions on each instance of PSL, the
           protected script and its associated DB file to the user account it is
           being launched under.
