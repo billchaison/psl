@@ -303,6 +303,7 @@ sub get_template()
           the psl.pl and psl.c files in the event that you need to recompile.
       (d) Compile PSL using the gcc "-s" option to strip out the symbol table.
           The symbol table makes it easier to reverse engineer the PSL binary.
+	  Optionally take advantage of ASLR by using -fPIE -pie.
       (e) Limit read/write/execute permissions on each instance of PSL, the
           protected script and its associated DB file to the user account it is
           being launched under.
@@ -322,7 +323,7 @@ sub get_template()
  (1) obtain a copy of psl.pl from https://github.com/billchaison/psl
  (2) chmod +x psl.pl
  (3) ./psl.pl > psl.c
- (4) gcc -s -o psl psl.c
+ (4) gcc -s -o psl psl.c [or] gcc -s -fPIE -pie -o psl psl.c
  (5) move psl.c and psl.pl off of the host that runs the psl executable
  (6) execute ./psl without parameters for basic help
  (7) follow system hardening best practices from bullet (8) above.
